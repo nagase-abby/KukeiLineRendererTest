@@ -21,10 +21,17 @@ public class RectangleLineRenderer : MonoBehaviour
     [SerializeField]
     private bool isMouse = false;
 
-    [SerializeField]
-    private bool isUpdate = false;
+    public Vector2 GetFirstVertex => line.GetPosition(0);
 
-    private Vector2 GetFirstVertex => line.GetPosition(0);
+    /// <summary>
+    /// 原点から引かれる線分の座標A
+    /// </summary>
+    public Vector2 PointA => line.GetPosition(1);
+
+    /// <summary>
+    /// 原点から引かれる線分の座標B
+    /// </summary>
+    public Vector2 PointB => line.GetPosition(3);
 
     private void Start()
     {
@@ -36,20 +43,13 @@ public class RectangleLineRenderer : MonoBehaviour
         }
     }
 
-    private void Update()
+    public void OnUpdate(Vector2 mouseVertex)
     {
-        if (!isUpdate)
-            return;
-
-        Vector3 mousePosition = Input.mousePosition;
-        mousePosition.z = 0;
-        Vector2 vertex = Camera.main.ScreenToWorldPoint(mousePosition);
-
         if (isMouse)
         {
-            line.SetPosition(0, vertex);
-            line.SetPosition(2, vertex);
-            line.SetPosition(4, vertex);
+            line.SetPosition(0, mouseVertex);
+            line.SetPosition(2, mouseVertex);
+            line.SetPosition(4, mouseVertex);
         }
 
         Test();
