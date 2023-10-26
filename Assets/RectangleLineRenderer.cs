@@ -57,6 +57,7 @@ public class RectangleLineRenderer : MonoBehaviour
 
     private void Test()
     {
+        // 指定の角度からなる座標を作成
         float y1 = GetFirstVertex.y + Mathf.Sin(GetAngle1(direction) * Mathf.Deg2Rad) * distance;
         float x1 = GetFirstVertex.x + Mathf.Cos(GetAngle1(direction) * Mathf.Deg2Rad) * distance;
         line.SetPosition(1, new Vector2(x1, y1));
