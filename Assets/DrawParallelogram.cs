@@ -4,14 +4,15 @@
 
 using UnityEngine;
 
+public enum Direction
+{
+    Right,
+
+    Left,
+}
+
 public class DrawParallelogram : MonoBehaviour
 {
-    [SerializeField]
-    private RectangleLineRenderer line1 = null;
-
-    [SerializeField]
-    private RectangleLineRenderer line2 = null;
-
     [SerializeField]
     private LineRenderer line = null;
 
@@ -19,27 +20,75 @@ public class DrawParallelogram : MonoBehaviour
     {
         line.positionCount = 5;
         line.loop = true;
+        for (int i = 0; i < line.positionCount; i++)
+        {
+            line.SetPosition(i, Vector3.zero);
+        }
     }
+
+    /// <summary>
+    /// マウスクリック開始地点
+    /// </summary>
+    private Vector2 origin = Vector2.zero;
 
     private void Update()
     {
         Vector3 mousePosition = Input.mousePosition;
         mousePosition.z = 0;
-        Vector2 vertex = Camera.main.ScreenToWorldPoint(mousePosition);
+        // 終点
+        Vector2 mouseOrigin = Camera.main.ScreenToWorldPoint(mousePosition);
 
-        line1.OnUpdate(vertex);
-        line2.OnUpdate(vertex);
+        if (Input.GetMouseButtonDown(0))
+        {
+            // 始点
+            origin = mouseOrigin;
+        }
+        else if (Input.GetMouseButton(0))
+        {
+            Vector2 originPointA = GetAngle1(origin, Direction.Right);
+            Vector2 originPointB = GetAngle2(origin, Direction.Right);
 
-        // マウス座標の始点と終点
-        line.SetPosition(0, line1.GetFirstVertex);
-        line.SetPosition(4, line1.GetFirstVertex);
-        line.SetPosition(2, line2.GetFirstVertex);
+            Vector2 mousePointA = GetAngle1(mouseOrigin, Direction.Left);
+            Vector2 mousePointB = GetAngle2(mouseOrigin, Direction.Left);
 
-        // 交点の座標
-        Vector2 line1A2A = ClacPointIntersect(line1.GetFirstVertex, line1.PointA, line2.GetFirstVertex, line2.PointA);
-        Vector2 line1B2B = ClacPointIntersect(line1.GetFirstVertex, line1.PointB, line2.GetFirstVertex, line2.PointB);
-        line.SetPosition(1, line1A2A);
-        line.SetPosition(3, line1B2B);
+            // 交点の座標
+            Vector2 line1A2A = ClacPointIntersect(origin, originPointA, mouseOrigin, mousePointA);
+            Vector2 line1B2B = ClacPointIntersect(origin, originPointB, mouseOrigin, mousePointB);
+
+            line.SetPositions(new Vector3[]
+            {
+                origin,
+                line1A2A,
+                mouseOrigin,
+                line1B2B,
+                origin
+            });
+        }
+    }
+
+    private Vector2 GetAngle1(Vector2 origin, Direction direction)
+    {
+        // 指定の角度からなる座標を作成
+        float y = origin.y + Mathf.Sin(GetAngle1(direction) * Mathf.Deg2Rad);
+        float x = origin.x + Mathf.Cos(GetAngle1(direction) * Mathf.Deg2Rad);
+        return new Vector2(x, y);
+    }
+
+    private Vector2 GetAngle2(Vector2 origin, Direction direction)
+    {
+        float y = origin.y + Mathf.Sin(GetAngle3(direction) * Mathf.Deg2Rad);
+        float x = origin.x + Mathf.Cos(GetAngle3(direction) * Mathf.Deg2Rad);
+        return new Vector2(x, y);
+    }
+
+    private float GetAngle1(Direction direction)
+    {
+        return direction == Direction.Right ? 25 : 155;
+    }
+
+    private float GetAngle3(Direction direction)
+    {
+        return direction == Direction.Right ? 335 : 205;
     }
 
     /// <summary>

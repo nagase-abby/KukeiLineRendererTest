@@ -1,12 +1,5 @@
 using UnityEngine;
 
-public enum Direction
-{
-    Right,
-
-    Left,
-}
-
 public class RectangleLineRenderer : MonoBehaviour
 {
     [SerializeField]
