@@ -1,3 +1,7 @@
+// リファレンス
+// 計算の公式 https://unitylab.wiki.fc2.com/wiki/%E4%BA%8C%E7%B7%9A%E3%81%AE%E4%BA%A4%E5%B7%AE%E3%81%99%E3%82%8B%E7%82%B9%E3%82%92%E6%A4%9C%E5%87%BA%282D%29
+// 数式の解読 https://text.tomo.school/two-lines-intersection/
+
 using UnityEngine;
 
 public class DrawParallelogram : MonoBehaviour
