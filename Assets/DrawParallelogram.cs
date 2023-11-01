@@ -16,13 +16,23 @@ public class DrawParallelogram : MonoBehaviour
     [SerializeField]
     private LineRenderer line = null;
 
+    [SerializeField]
+    private LineRenderer offsetLine = null;
+
     private void Start()
     {
         line.positionCount = 5;
-        line.loop = true;
+        line.loop = false;
         for (int i = 0; i < line.positionCount; i++)
         {
             line.SetPosition(i, Vector3.zero);
+        }
+
+        offsetLine.positionCount = 3;
+        offsetLine.loop = false;
+        for (int i = 0; i < offsetLine.positionCount; i++)
+        {
+            offsetLine.SetPosition(i, Vector3.zero);
         }
     }
 
@@ -63,6 +73,11 @@ public class DrawParallelogram : MonoBehaviour
                 line1B2B,
                 origin
             });
+
+            offsetLine.SetPositions(new Vector3[]
+            {
+                line1A2A,origin,line1B2B
+            });
         }
     }
 
@@ -76,8 +91,8 @@ public class DrawParallelogram : MonoBehaviour
 
     private Vector2 GetAngle2(Vector2 origin, Direction direction)
     {
-        float y = origin.y + Mathf.Sin(GetAngle3(direction) * Mathf.Deg2Rad);
-        float x = origin.x + Mathf.Cos(GetAngle3(direction) * Mathf.Deg2Rad);
+        float y = origin.y + Mathf.Sin(GetAngle2(direction) * Mathf.Deg2Rad);
+        float x = origin.x + Mathf.Cos(GetAngle2(direction) * Mathf.Deg2Rad);
         return new Vector2(x, y);
     }
 
@@ -86,7 +101,7 @@ public class DrawParallelogram : MonoBehaviour
         return direction == Direction.Right ? 25 : 155;
     }
 
-    private float GetAngle3(Direction direction)
+    private float GetAngle2(Direction direction)
     {
         return direction == Direction.Right ? 335 : 205;
     }
