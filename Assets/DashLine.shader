@@ -7,7 +7,7 @@ Shader "Unlit/DashLine"
    }
    SubShader {
        Tags { "RenderType"="Transparent" "Queue" = "Transparent" }
-       Blend SrcAlpha OneMinusSrcAlpha 
+       Blend SrcAlpha OneMinusSrcAlpha
        LOD 100
 
        Pass {
